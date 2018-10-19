@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "737322128203",
+    "firebase_url": "https://map-app-b4ce8.firebaseio.com",
+    "project_id": "map-app-b4ce8",
+    "storage_bucket": "map-app-b4ce8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:737322128203:android:32b741e61d39685d",
+        "android_client_info": {
+          "package_name": "com.hackupc.mapapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "737322128203-31fs8b03mufp6d8fcffk78lkh0d2c6qm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfpBJ9dWMuvCSRbtUllOxdbEDtn1if5e4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
