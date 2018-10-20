@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import firebase from "react-native-firebase";
 import MapView, { Marker } from "react-native-maps";
-
+import Event from "./Event.js";
 const fakeData = [
   {
     name: "Play Football",
@@ -108,6 +108,7 @@ firebase.initializeApp(config);
 
 const { app } = firebase.storage();
 console.log(app.name);
+
 export default () => (
   <View style={styles.container}>
     <MapView
