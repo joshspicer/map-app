@@ -3,8 +3,7 @@ import _ from 'lodash';
 import { StyleSheet, Platform, Image, Text, View, ScrollView, TextInput, TouchableOpacity,} from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
-import event from './event';
+import Event from './Event';
 
 const fakeData = [
   {name:"Play Football", date: "2018-10-21T01:01:29Z",latitude:41.3899301, longitude:2.1130454,description:"this is a test 1",creatorPhone:123456789},
