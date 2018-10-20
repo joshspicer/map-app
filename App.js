@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Platform, Image, Text, View, ScrollView } from 'react-native';
 import MapView from 'react-native-maps';
+import firebase from 'react-native-firebase';
 
 const styles = StyleSheet.create({
  container: {
@@ -14,6 +15,11 @@ const styles = StyleSheet.create({
    ...StyleSheet.absoluteFillObject,
  },
 });
+var config = {
+    databaseURL: "https://map-app-b4ce8.firebaseio.com/",
+    projectId: "map-app",
+};
+firebase.initializeApp(config);
 
 export default () => (
    <View style={styles.container}>
@@ -27,5 +33,6 @@ export default () => (
        }}
      >
      </MapView>
+
    </View>
 );
