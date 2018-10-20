@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { Component } from "react";
 import _ from "lodash";
 import {
@@ -11,6 +12,9 @@ import {
 import firebase from "react-native-firebase";
 import MapView, { Marker } from "react-native-maps";
 import Event from "./Event.js";
+=======
+
+>>>>>>> 966394880e837c7f0946a432f7becdf6a6b6d87a
 const fakeData = [
   {
     name: "Play Football",
@@ -37,7 +41,10 @@ class App extends Component {
     this.state = {
       latitude: null,
       longitude: null,
+<<<<<<< HEAD
       error: null
+=======
+>>>>>>> 966394880e837c7f0946a432f7becdf6a6b6d87a
     };
   }
 
@@ -56,10 +63,14 @@ class App extends Component {
   }
 
   render() {
+<<<<<<< HEAD
     const { latitude, longitude } = this.state;
     const latLng = { latitude: latitude, longitude: longitude };
+=======
+>>>>>>> 966394880e837c7f0946a432f7becdf6a6b6d87a
 
     if (latitude != null || longitude != null) {
+<<<<<<< HEAD
       return (
         <View style={styles.container}>
           <MapView
@@ -84,12 +95,15 @@ class App extends Component {
     } else {
       console.log("loading");
       return <Text>loading...</Text>;
+=======
+>>>>>>> 966394880e837c7f0946a432f7becdf6a6b6d87a
     }
   }
 }
 
 const styles = StyleSheet.create({
   container: {
+<<<<<<< HEAD
     ...StyleSheet.absoluteFillObject,
     height: 400,
     width: 400,
