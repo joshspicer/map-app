@@ -7,6 +7,7 @@ import firebase from 'react-native-firebase';
 
 class App extends Component {
 
+
   constructor(props) {
     super(props);
 
@@ -73,7 +74,8 @@ var config = {
 };
 firebase.initializeApp(config);
 
-<<<<<<< HEAD
+const {app}= firebase.storage();
+console.log(app.name);
 export default () => (
    <View style={styles.container}>
      <MapView
@@ -89,6 +91,4 @@ export default () => (
 
    </View>
 );
-=======
 export default App;
->>>>>>> e4d9809be7f678fddb88e761e21be70262c51cc9
