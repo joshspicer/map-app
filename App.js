@@ -13,6 +13,13 @@ import firebase from "react-native-firebase";
 import MapView, { Marker } from "react-native-maps";
 import Event from "./Event.js";
 =======
+import React, { Component }  from 'react';
+import _ from 'lodash';
+import { StyleSheet, Platform, Image, Text, View, ScrollView, TextInput, TouchableOpacity,} from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+import event from './event';
 
 >>>>>>> 966394880e837c7f0946a432f7becdf6a6b6d87a
 const fakeData = [
@@ -44,6 +51,9 @@ class App extends Component {
 <<<<<<< HEAD
       error: null
 =======
+      error: null,
+      isDetailedScreen: false,
+      isCreateScreen: false,
 >>>>>>> 966394880e837c7f0946a432f7becdf6a6b6d87a
     };
   }
@@ -67,7 +77,29 @@ class App extends Component {
     const { latitude, longitude } = this.state;
     const latLng = { latitude: latitude, longitude: longitude };
 =======
+    const { latitude, longitude, error, isDetailedScreen, isCreateScreen } = this.state;
+    const latLng =  {latitude: latitude, longitude: longitude};
 >>>>>>> 966394880e837c7f0946a432f7becdf6a6b6d87a
+
+    if (isDetailedScreen) {
+      return(
+      <TouchableOpacity
+          style={styles.container}
+          onPress={() => this.setState({isDetailedScreen: false})}>
+          <Text>DETAIL SCREEN</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    if (isCreateScreen) {
+      return(
+      <TouchableOpacity
+          style={styles.container}
+          onPress={() => this.setState({isCreateScreen: false})}>
+          <Text>CREATE SCREEN</Text>
+        </TouchableOpacity>
+      );
+    }
 
     if (latitude != null || longitude != null) {
 <<<<<<< HEAD
@@ -96,6 +128,42 @@ class App extends Component {
       console.log("loading");
       return <Text>loading...</Text>;
 =======
+        return(
+          <View style={styles.container}>
+            <View style={styles.mapContainer}>
+              <MapView
+                style={styles.map}
+                region={{
+                latitude: latitude,
+                longitude: longitude,
+                latitudeDelta: 0.015,
+                longitudeDelta: 0.0121,
+              }}>
+
+            {fakeData.map((marker,key) => {
+              const coords = {latitude: marker.latitude, longitude: marker.longitude}
+               return(
+                 <MapView.Marker
+                      key={key}
+                      coordinate={coords}
+                      title={marker.name}
+               />
+             )})}
+
+          </MapView>
+        </View>
+        <View style={styles.buttonRowStyle}>
+
+          <TouchableOpacity onPress={() => this.setState({isCreateScreen: true})}>
+          <Icon name="plus" size={70} color="#000" />
+        </TouchableOpacity>
+
+        </View>
+      </View>);
+      } else {
+        console.log("loading");
+        return <Text>{error ? error : "loading..."}</Text>
+      }
 >>>>>>> 966394880e837c7f0946a432f7becdf6a6b6d87a
     }
   }
@@ -114,6 +182,26 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject
   }
 =======
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+ mapContainer: {
+   ...StyleSheet.absoluteFillObject,
+   height: 400,
+   width: 400,
+   justifyContent: 'flex-end',
+   alignItems: 'center',
+ },
+ map: {
+   ...StyleSheet.absoluteFillObject,
+ },
+ buttonRowStyle: {
+  flex: 1,
+  justifyContent: 'flex-end',
+  alignSelf: 'center',
+  marginBottom: 35,
+ },
 >>>>>>> 966394880e837c7f0946a432f7becdf6a6b6d87a
 });
 var config = {
