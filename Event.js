@@ -5,18 +5,33 @@ import {
   Image,
   Text,
   View,
-  ScrollView
+  ScrollView,
+  BackHandler,
 } from "react-native";
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 class Event extends Component {
 
+  componentDidMount() {
+   this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+     this.props.onCancel(); // works best when the goBack is async
+     return true;
+   });
+ }
+
+ componentWillUnmount() {
+   this.backHandler.remove();
+ }
+
   render() {
-    const { title, desc, date } = this.props;
+    const { title, desc, date, onCancel } = this.props;
     return(
     <ScrollView style={styles.container}>
       <Text style={styles.title}> {title} </Text>
       <Text style={styles.description}> {desc}</Text>
-      <Text style={styles.starttimestyle}> The Event Starts at: {date} </Text>
+      <Text style={styles.dateStyle}> The Event Starts at: {date} </Text>
+      <Text onPress={() => this.props.onCancel()}> Go back </Text>
     </ScrollView>
     );
   }
@@ -31,31 +46,21 @@ const styles = StyleSheet.create({
     borderColor: "#d6d7da"
   },
   title: {
-    fontSize: 22,
-    margin: 30,
+    fontSize: 36,
+    margin: 20,
     alignSelf: "flex-start",
     fontWeight: "bold"
   },
   description: {
-    fontSize: 16,
-    padding: 15,
-    margin: 30,
+    fontSize: 24,
+    margin: 20,
     alignSelf: "flex-start",
-    color: "#D3D3D3"
   },
-  starttimestyle: {
-    fontSize: 14,
-    padding: 10,
+  dateStyle: {
+    fontSize: 18,
     margin: 20,
     alignSelf: "flex-start",
     color: "#32CD32"
   },
-  endtimestyle: {
-    fontSize: 14,
-    padding: 10,
-    margin: 20,
-    alignSelf: "flex-start",
-    color: "#FF0000"
-  }
 });
 export default Event;

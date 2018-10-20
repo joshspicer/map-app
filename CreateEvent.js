@@ -14,8 +14,7 @@ class CreateEvent extends Component {
           description: '',
           phone: '',
           date: '',
-          latitude: null,
-          longitude: null,
+          selectedLatLng: null,
        }
   }
 
@@ -33,36 +32,53 @@ class CreateEvent extends Component {
        this.setState({ date: date })
   }
 
-  isDisabled() {
-    const { name,description,creatorPhone,date, latitude, longitude } = this.state;
-    return (name == '') && (description == '') && !latitude && !longitude;
-  }
-
   uuidv4() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
     return v.toString(16);
-  });
-}
+    });
+  }
+
+  chosenCoords() {
+    const { selectedLatLng } = this.state;
+    if (selectedLatLng) {
+      return selectedLatLng;
+    } else {
+      return null;
+    }
+  }
+
+  recordUserPress(pos) {
+    this.setState({selectedLatLng: pos.coordinate});
+  }
 
 
 
     // Sends this data to firebase
-    async sendToFirebase(name,description,creatorPhone,date) {
+    async sendToFirebase() {
+
+      const { name,description,phone,date,selectedLatLng } = this.state;
+
+
+
+      if (!name || !description || !phone || /*!date* ||*/ !selectedLatLng) {
+        alert("Please fill out all the field!");
+        return;
+      }
 
       this.ref.doc(this.uuidv4()).set({
         name,
         date: "2018-10-21T01:01:29Z",
-        latitude: 41.3889301,
-        longitude: 2.1170454,
+        latitude: selectedLatLng.latitude,
+        longitude:  selectedLatLng.longitude,
         description,
-        creatorPhone
+        phone,
       }).then(() => this.props.onCancel())
     }
 
 
    render() {
-     const { name,description,creatorPhone,date } = this.state;
+     const { name,description,phone,date,selectedLatLng, } = this.state;
 
       return (
          <ScrollView style = {styles.container}>
@@ -79,7 +95,7 @@ class CreateEvent extends Component {
                placeholder = "Description"
                placeholderTextColor = "#9a73ef"
                autoCapitalize = "none"
-               onChangeText = {this.handleDesciption}/>
+               onChangeText = {this.handleDescription}/>
 
 
              <TextInput style = {styles.input}
@@ -99,21 +115,27 @@ class CreateEvent extends Component {
 
                    <View style={styles.mapContainer}>
                      <MapView
+                       onPress={(e) => {this.recordUserPress(e.nativeEvent)}}
                        style={styles.map}
                        region={{
-                       latitude: this.props.latitude,
-                       longitude: this.props.longitude,
+                       latitude: selectedLatLng ? selectedLatLng.latitude : this.props.latitude,
+                       longitude: selectedLatLng ? selectedLatLng.longitude : this.props.longitude,
                        latitudeDelta: 0.015,
                        longitudeDelta: 0.0121,
-                     }}/>
+                     }}>
+                     {this.chosenCoords() ?
+                     <MapView.Marker
+                          coordinate={this.chosenCoords()}
+                          title={"Selected Location"}
+                   /> : null}
+                     </MapView>
                    </View>
 
 
         <View>
             <TouchableOpacity
-              disabled={this.isDisabled()}
               onPress={() => {
-                this.sendToFirebase(name,description,creatorPhone,date);
+                this.sendToFirebase();
                 }
               }
               style = {styles.submitButton}>
@@ -133,7 +155,7 @@ class CreateEvent extends Component {
 
 const styles = StyleSheet.create({
    container: {
-      paddingTop: 23
+      paddingTop: 23,
    },
    input: {
       margin: 15,
@@ -142,16 +164,20 @@ const styles = StyleSheet.create({
       borderWidth: 1
    },
    mapContainer: {
-     ...StyleSheet.absoluteFillObject,
-     height: 400,
-     width: 400,
+     height: 200,
+     width: '100%',
      justifyContent: 'flex-end',
      alignItems: 'center',
+     alignSelf: 'center',
+     margin: 15,
+   },
+   map: {
+     ...StyleSheet.absoluteFillObject,
    },
    submitButton: {
       backgroundColor: '#7a42f4',
       padding: 10,
-      margin: 15,
+      margin: 10,
       height: 40,
    },
    submitButtonText:{
@@ -160,7 +186,7 @@ const styles = StyleSheet.create({
    cancelButton: {
       backgroundColor: 'red',
       padding: 10,
-      margin: 15,
+      margin: 10,
       height: 40,
    },
    cancelButtonText:{

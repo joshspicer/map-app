@@ -22,15 +22,9 @@ class App extends Component {
       isCreateScreen: false,
       events: [],
       selectedEvent: null,
+      needReload: false,
     };
   }
-
-  // componentDidUpdate(prevProps, prevState, snapshot) {
-  //   if (prevState.events != this.state.events) {
-  //     Marker.redraw();
-  //   }
-  // }
-
 
   componentDidMount() {
     // Gets the current location and stores it in state.
@@ -49,7 +43,8 @@ class App extends Component {
   }
 
   onCancel() {
-    this.setState({isCreateScreen: false})
+    this.setState({isCreateScreen: false});
+    // this.setState({needReload: true});
   }
 
   openDetails(id) {
@@ -63,7 +58,6 @@ class App extends Component {
 
 
 getAllEvents() {
-    // let events = [];
     this.ref.get()
         .then(out => {
           console.log(out);
@@ -76,26 +70,13 @@ getAllEvents() {
           })
         })
       .catch(err => console.log(err));
-
-      // console.log(events)
-      // this.setState({events});
   }
 
 
-  // async set() {
-  //     this.ref.doc("56789").set({
-  //       name: "Ukelele Jam Session",
-  //       date: "2018-10-21T01:01:29Z",
-  //       latitude: "41.3889301",
-  //       longitude: "2.1130454",
-  //       description: "this is a test 2",
-  //       creatorPhone: 54321
-  //     });
-  //   }
 
 
   render() {
-    const { latitude, longitude, error, isDetailedScreen, isCreateScreen, events } = this.state;
+    const { latitude, longitude, error, isDetailedScreen, isCreateScreen, events, needReload } = this.state;
     const latLng =  {latitude: latitude, longitude: longitude};
     // this.set();
 
@@ -104,22 +85,22 @@ getAllEvents() {
         return <Text>{error ? error : "loading..."}</Text>
       }
 
-      console.log(events)
-      // console.log(fakeData)
-      // console.log(events[0])
+      if (needReload) {
+        this.setState({needReload: false});
+        this.getAllEvents();
+
+      }
 
     if (isDetailedScreen) {
       const evtTitle = _.get(this.state, 'selectedEvent.name');
-      console.log(evtTitle);
       const evtDesc = _.get(this.state, 'selectedEvent.description');
-      console.log(evtDesc);
       const evtDate = _.get(this.state, 'selectedEvent.date');
-      console.log(evtDate);
       if (evtTitle && evtDesc && evtDate) {
-        return <Event title={evtTitle} desc={evtDesc} date={evtDate} /> ;
+        return <Event
+          onCancel={() => this.onCancel()}
+          title={evtTitle} desc={evtDesc} date={evtDate} /> ;
       }
     }
-
 
     if (isCreateScreen) {
       return <CreateEvent
@@ -128,11 +109,11 @@ getAllEvents() {
                 longitude={this.state.longitude} /> ;
     }
 
-
       return(
           <View style={styles.container}>
             <View style={styles.mapContainer}>
               <MapView
+                showsUserLocation={true}
                 style={styles.map}
                 region={{
                 latitude: latitude,
@@ -142,7 +123,6 @@ getAllEvents() {
               }}>
 
             {events.map((marker,key) => {
-              console.log("!!!");
               const coords = {latitude: marker.latitude, longitude: marker.longitude}
                return(
                  <MapView.Marker
@@ -150,12 +130,14 @@ getAllEvents() {
                       onPress={e => this.openDetails(e.nativeEvent.id)}
                       key={key}
                       coordinate={coords}
-                      title={marker.name}
-               />
+                      title={marker.name} >
+                      <MapView.Callout tooltip style={styles.plainView}>
+                      </MapView.Callout>
+                  </MapView.Marker>
              )})}
+           </MapView>
+           </View>
 
-          </MapView>
-        </View>
         <View style={styles.buttonRowStyle}>
 
           <TouchableOpacity onPress={() => this.setState({isCreateScreen: true})}>
@@ -175,8 +157,8 @@ const styles = StyleSheet.create({
   },
  mapContainer: {
    ...StyleSheet.absoluteFillObject,
-   height: 400,
-   width: 400,
+   height: '100%',
+   width: '100%',
    justifyContent: 'flex-end',
    alignItems: 'center',
  },
@@ -188,6 +170,9 @@ const styles = StyleSheet.create({
   justifyContent: 'flex-end',
   alignSelf: 'center',
   marginBottom: 35,
+ },
+ plainView: {
+   width: 60,
  },
 });
 
