@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "react";
 import {
   StyleSheet,
   Platform,
@@ -7,6 +7,7 @@ import {
   View,
   ScrollView
 } from "react-native";
+
 class Event extends Component {
   render() {
     <ScrollView>

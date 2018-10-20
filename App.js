@@ -3,6 +3,8 @@ import _ from 'lodash';
 import { StyleSheet, Platform, Image, Text, View, ScrollView, TextInput, TouchableOpacity,} from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Event from './Event';
+
 
 const fakeData = [
   {
