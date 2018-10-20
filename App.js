@@ -1,4 +1,3 @@
-import React from 'react';
 import React, { Component }  from 'react';
 import { StyleSheet, Platform, Image, Text, View, ScrollView } from 'react-native';
 import MapView from 'react-native-maps';
