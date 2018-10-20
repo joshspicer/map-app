@@ -1,5 +1,6 @@
 import React, { Component }  from 'react';
 import { StyleSheet, Platform, Image, Text, View, ScrollView } from 'react-native';
+<<<<<<< HEAD
 import MapView from 'react-native-maps';
 import firebase from 'react-native-firebase';
 
