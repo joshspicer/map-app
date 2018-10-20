@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, ScrollView} from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, ScrollView, TimePickerAndroid, DatePickerAndroid,} from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import firebase from 'react-native-firebase';
 
@@ -28,9 +28,6 @@ class CreateEvent extends Component {
       this.setState({ phone: number })
    }
 
-  handleDate = (date) => {
-       this.setState({ date: date })
-  }
 
   uuidv4() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -52,6 +49,43 @@ class CreateEvent extends Component {
     this.setState({selectedLatLng: pos.coordinate});
   }
 
+  async selectTime() {
+    try {
+      const {action, hour, minute} = await TimePickerAndroid.open({
+        hour: 14,
+        minute: 0,
+        is24Hour: false, // Will display '2 PM'
+      });
+     if (action !== TimePickerAndroid.dismissedAction) {
+       // Selected hour (0-23), minute (0-59)
+       let dateAndTime = this.state.date + " at " + hour + ":" + minute;
+       this.setState({date: dateAndTime  })
+
+     }
+   } catch ({code, message}) {
+     console.warn('Cannot open time picker', message);
+   }
+}
+
+async selectDate() {
+  try {
+  const {action, year, month, day} = await DatePickerAndroid.open({
+    // Use `new Date()` for current date.
+    // May 25 2020. Month 0 is January.
+    date: new Date(2020, 4, 25)
+  });
+  if (action !== DatePickerAndroid.dismissedAction) {
+    // Selected year, month (0-11), day
+    let theDate = (month+1) + "/" + day + "/" + year;
+    this.setState({date: theDate })
+    this.selectTime();
+
+  }
+} catch ({code, message}) {
+  console.warn('Cannot open date picker', message);
+}
+}
+
 
 
     // Sends this data to firebase
@@ -62,13 +96,13 @@ class CreateEvent extends Component {
 
 
       if (!name || !description || !phone || /*!date* ||*/ !selectedLatLng) {
-        alert("Please fill out all the field!");
+        alert("Please fill out all the fields!");
         return;
       }
 
       this.ref.doc(this.uuidv4()).set({
         name,
-        date: "2018-10-21T01:01:29Z",
+        date,
         latitude: selectedLatLng.latitude,
         longitude:  selectedLatLng.longitude,
         description,
@@ -105,12 +139,11 @@ class CreateEvent extends Component {
                 autoCapitalize = "none"
                 onChangeText = {this.handlePhone}/>
 
-                <TextInput style = {styles.input}
-                   underlineColorAndroid = "transparent"
-                   placeholder = "date"
-                   placeholderTextColor = "#9a73ef"
-                   autoCapitalize = "none"
-                   onChangeText = {this.handleDate}/>
+                <TouchableOpacity
+                  onPress={() => this.selectDate()}
+                style = {styles.timeButton}>
+                <Text style ={styles.timeButtonText}> { date || "Select Date and Time" } </Text>
+             </TouchableOpacity>
             </View>
 
                    <View style={styles.mapContainer}>
@@ -191,7 +224,16 @@ const styles = StyleSheet.create({
    },
    cancelButtonText:{
       color: 'white'
-   }
+   },
+   timeButtonText: {
+     color: 'white'
+   },
+   timeButton: {
+      backgroundColor: 'gray',
+      padding: 10,
+      margin: 10,
+      height: 40,
+   },
 });
 
 export default CreateEvent;

@@ -30,8 +30,7 @@ class Event extends Component {
     <ScrollView style={styles.container}>
       <Text style={styles.title}> {title} </Text>
       <Text style={styles.description}> {desc}</Text>
-      <Text style={styles.dateStyle}> The Event Starts at: {date} </Text>
-      <Text onPress={() => this.props.onCancel()}> Go back </Text>
+      <Text style={styles.dateStyle}> The Event Starts on: {date} </Text>
     </ScrollView>
     );
   }

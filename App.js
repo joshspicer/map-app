@@ -1,8 +1,8 @@
 import React, { Component }  from 'react';
 import _ from 'lodash';
-import { StyleSheet, Platform, Image, Text, View, ScrollView, TextInput, TouchableOpacity,} from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { StyleSheet, Platform, Image, Text, View, ScrollView, TextInput, TouchableOpacity, BackHandler} from 'react-native';
+import MapView, { Marker, Callout } from 'react-native-maps';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import Event from './Event';
 import CreateEvent from './CreateEvent';
 import firebase from 'react-native-firebase';
@@ -40,20 +40,30 @@ class App extends Component {
     );
 
     this.getAllEvents();
+
+
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      return true;
+    });
   }
 
-  onCancel() {
+  onCancel(evt) {
     this.setState({isCreateScreen: false});
-    // this.setState({needReload: true});
+    this.setState({isDetailedScreen: false});
+    if (evt) {
+      this.setState({events: this.state.events.concat([evt])});
+    }
   }
 
-  openDetails(id) {
-    const evt = _.find(this.state.events, function(evt) { return evt.id === id; });
-    console.log(evt);
-    if (evt) {
-      this.setState({selectedEvent: evt});
+  openDetails() {
+    if (this.state.selectedEvent) {
       this.setState({isDetailedScreen: true});
     }
+  }
+
+  storeDetails(id) {
+    const evt = _.find(this.state.events, function(evt) { return evt.id === id; });
+    this.setState({selectedEvent: evt});
   }
 
 
@@ -127,12 +137,11 @@ getAllEvents() {
                return(
                  <MapView.Marker
                       identifier={marker.id}
-                      onPress={e => this.openDetails(e.nativeEvent.id)}
+                      onPress={e => this.storeDetails(e.nativeEvent.id)}
+                      onCalloutPress={() => this.openDetails()}
                       key={key}
                       coordinate={coords}
                       title={marker.name} >
-                      <MapView.Callout tooltip style={styles.plainView}>
-                      </MapView.Callout>
                   </MapView.Marker>
              )})}
            </MapView>
@@ -141,7 +150,7 @@ getAllEvents() {
         <View style={styles.buttonRowStyle}>
 
           <TouchableOpacity onPress={() => this.setState({isCreateScreen: true})}>
-          <Icon name="plus" size={70} color="#9a73ef" />
+          <Icon name="add-location" size={70} color="#9a73ef" />
         </TouchableOpacity>
 
         </View>
