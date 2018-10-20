@@ -113,6 +113,8 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject
   }
+=======
+>>>>>>> 966394880e837c7f0946a432f7becdf6a6b6d87a
 });
 var config = {
   databaseURL: "https://map-app-b4ce8.firebaseio.com/",
