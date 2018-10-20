@@ -5,11 +5,25 @@ import MapView, { Marker } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const fakeData = [
-  {name:"Play Football", date: "2018-10-21T01:01:29Z",latitude:41.3899301, longitude:2.1130454,description:"this is a test 1",creatorPhone:123456789},
-  {name:"Ukelele Jam Session", date: "2018-10-21T01:01:29Z",latitude:41.3889301, longitude:2.1130454,description:"this is a test 2",creatorPhone:54321}]
+  {
+    name: "Play Football",
+    date: "2018-10-21T01:01:29Z",
+    latitude: 41.3899301,
+    longitude: 2.1130454,
+    description: "this is a test 1",
+    creatorPhone: 123456789
+  },
+  {
+    name: "Ukelele Jam Session",
+    date: "2018-10-21T01:01:29Z",
+    latitude: 41.3889301,
+    longitude: 2.1130454,
+    description: "this is a test 2",
+    creatorPhone: 54321
+  }
+];
 
 class App extends Component {
-
   constructor(props) {
     super(props);
 
@@ -25,14 +39,14 @@ class App extends Component {
   componentDidMount() {
     // Gets the current location and stores it in state.
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      position => {
         this.setState({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
-          error: null,
+          error: null
         });
       },
-      (error) => this.setState({ error: error.message }),
+      error => this.setState({ error: error.message })
     );
 
 
@@ -100,6 +114,7 @@ class App extends Component {
         return <Text>{error ? error : "loading..."}</Text>
       }
     }
+  }
 }
 
 const styles = StyleSheet.create({

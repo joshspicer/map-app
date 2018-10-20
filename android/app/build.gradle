@@ -154,6 +154,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-firebase')
     compile project(':react-native-vector-icons')
     compile project(':react-native-maps')
   implementation(project(':react-native-firebase')) {
