@@ -1,6 +1,12 @@
 # map-app
 HackUPC Project 2018
 
+## Description
+
+Map-app (name in progress) is a social platform to find out about events near your current location. Any user of the app can place a pin on the map indicating some activity they'd like to do (Play tennis), and every other user can see that event.
+
+
+
 ## Setup
 
 1. Make a directory for your hackUPC project -- `mkdir hackUPC`
