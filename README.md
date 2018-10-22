@@ -1,5 +1,7 @@
 note: revoked all api keys. In order to use the app, you'll need to replace the maps API and firebase API sections of the app.
 
+See more details at: https://joshspicer.com/hack-upc
+
 # map-app
 HackUPC Project 2018
 
